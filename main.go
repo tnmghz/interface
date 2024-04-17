@@ -13,14 +13,13 @@ const (
 )
 
 func main() {
-	var serv service.Service
-	x := serv.NewMyFile(fileName)
-	x.Read() //читаем строку из файла fileName
-	fmt.Println(x.Text)
-	unMasked := []byte(x.Text)
+	var s service.Stringer
+	str := service.Read(fileName, s) //читаем строку из файла fileName
+	fmt.Println(str)
+	unMasked := []byte(str)
 	key := []byte(keyLine)
 	num := mask.Search(unMasked, key) //получаем номер символа, с которого начинается маскировка
 	masked := "\n"
 	masked += mask.Mask(num, unMasked, maskSym) //получаем новую строку с замаскированной ссылкой
-	x.Write(masked)                             //записываем строку в файл
+	service.Write(fileName, masked, s)          //записываем строку в файл
 }
